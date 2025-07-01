@@ -2,6 +2,7 @@
 # Makefile for UNIX keyed-IO routines.
 # 	(c) Ken Wellsch 1985
 #
+CC = /opt/local/bin/gcc
 CFLAGS = -O
 KLIB = klib.a
 

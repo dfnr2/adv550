@@ -11,6 +11,31 @@
 
 #include <sys/file.h>
 
+/* System function declarations for K&R compatibility */
+extern long lseek();
+extern int read();
+extern int write();
+extern int close();
+extern char *strncpy();
+extern char *strncat();
+
+/* KIO function prototypes */
+extern int GetBlk();
+extern int GetRec();
+extern int PutBlk();
+extern long PutRec();
+extern int MakBlk();
+extern long MapBlk();
+extern void MapKey();
+extern void MakNam();
+extern int creatk();
+extern int openk();
+extern int closek();
+extern int readk();
+extern int writek();
+extern int dupk();
+extern void error();
+
 #define MAXENTRIES	16
 #define MAXIBLK		1024
 #define EMPTY		-1
