@@ -27,7 +27,7 @@ char clss [] =
 	OBJECT,
 	OBJECT,
 	VARIABLE,
-	NULL,
+	NULL_CMD,
 	0
 } ;
 

@@ -10,6 +10,7 @@
 */
 
 #include "mdefs.h"
+#include <string.h>
 
 struct cm
 {
@@ -27,7 +28,7 @@ struct cm commnd [MAXCOM] =
 	"LABEL",	LABEL,
 	"LIST",		LIST,
 	"NOLIST",	NOLIST,
-	"NULL",		NULL,
+	"NULL",		NULL_CMD,
 	"OBJECT",	OBJECT,
 	"PLACE",	PLACE,
 	"REPEAT",	REPEAT,
@@ -42,16 +43,16 @@ int parse ()
 {
 	register int m ;
 
-	m = getline (token,MAXLINE) ;
-	for ( ; m != EOF ; m = getline (token,MAXLINE) )
+	m = getln (token,MAXLINE) ;
+	for ( ; m != EOF ; m = getln (token,MAXLINE) )
 	{
 		if ( m == MAJOR && gettok (token,MAXLINE) == OK )
 			exec (major(token)) ;
 	}
-	return ;
+	return OK ;
 }
 
-int getline (line,msize)
+int getln (line,msize)
   char line[] ;
   int msize ;
 {
@@ -172,7 +173,7 @@ int exec (cmd)
 		case NOLIST:
 			list = NO ;
 			break ;
-		case NULL:
+		case NULL_CMD:
 			null () ;
 			break ;
 		case OBJECT:
@@ -200,7 +201,7 @@ int exec (cmd)
 			error ("Exec","%d -- Unrecognised Command.",cmd) ;
 			break ;
 	}
-	return ;
+	return OK ;
 }
 
 #define isalpha(c)	(((c)>='a'&&(c)<='z')||((c)>='A'&&(c)<='Z'))

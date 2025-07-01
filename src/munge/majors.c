@@ -10,6 +10,7 @@
 */
 
 #include "mdefs.h"
+#include <string.h>
 
 static short int nxtint =     0 ;
 static short int nxtrep =   500 ;
@@ -21,7 +22,7 @@ static short int nxtobj =  8000 ;
 static short int nxtvar = 11000 ;
 
 
-int act ()
+void act ()
 {
 	register struct symstr *p ;
 	register int key ;
@@ -72,10 +73,9 @@ int act ()
 	}
 
 	compile (key) ;
-	return ;
 }
 
-int at ()
+void at ()
 {
 	register struct symstr *p ;
 	register int key ;
@@ -107,10 +107,9 @@ int at ()
 
 	flushline () ;
 	compile (key) ;
-	return ;
 }
 
-int def ()
+void def ()
 {
 	register struct symstr *p ;
 	extern struct symstr *lookup () ;
@@ -124,12 +123,11 @@ int def ()
 		}
 		p->s_mod = KEEP ;
 	}
-	return ;
 }
 
 #include <strings.h>
 
-int inc ()
+void inc ()
 {
 	register char *s ;
 
@@ -158,19 +156,17 @@ int inc ()
 		errout ("%s:\n",&(s[1])) ;
 
 	flushline () ;
-	return ;
 }
 
-int init ()
+void init ()
 {
 	flushline () ;
 	compile (nxtint) ;
 	nxtint ++ ;
 	ninit ++ ;
-	return ;
 }
 
-int lab ()
+void lab ()
 {
 	extern struct symstr *define () ;
 
@@ -189,10 +185,9 @@ int lab ()
 	flushline () ;
 	compile (nxtlab) ;
 	nxtlab++ ;
-	return ;
 }
 
-int null ()
+void null ()
 {
 	extern struct symstr *define () ;
 
@@ -204,10 +199,9 @@ int null ()
 			return ;
 		}
 	}
-	return ;
 }
 
-int obj ()
+void obj ()
 {
 	register struct symstr *p ;
 	register int m, n ;
@@ -227,20 +221,20 @@ int obj ()
 
 	flushline () ;
 	n = 0 ;
-	m = getline (token,MAXLINE) ;
+	m = getln (token,MAXLINE) ;
 	if ( m == NEXT )
 	{
 		n++ ;
-		m = getline (token,MAXLINE) ;
+		m = getln (token,MAXLINE) ;
 	}
 	if ( m == OK && token[0] == NEWLINE )
 	{
-		while ( getline (token,MAXLINE) == OK )
+		while ( getln (token,MAXLINE) == OK )
 			;
-		m = getline (token,MAXLINE) ;
+		m = getln (token,MAXLINE) ;
 		n++ ;
 	}
-	for ( ; m != MAJOR && m != EOF ; m = getline (token,MAXLINE) )
+	for ( ; m != MAJOR && m != EOF ; m = getln (token,MAXLINE) )
 	{
 		clrtext () ;
 		do
@@ -252,7 +246,7 @@ int obj ()
 			}
 			apptext (token) ;
 		}
-		while ( getline (token,MAXLINE) == OK ) ;
+		while ( getln (token,MAXLINE) == OK ) ;
 
 		outtext (nxtobj+((n++)*MAXOBJECTS)) ;
 	}
@@ -265,10 +259,9 @@ int obj ()
 	nxtobj++ ;
 	nobj ++ ;
 
-	return ;
 }
 
-int place ()
+void place ()
 {
 	register struct symstr *p ;
 	extern struct symstr *define () ;
@@ -286,12 +279,12 @@ int place ()
 	}
 	flushline () ;
 
-	if ( getline (token,MAXLINE) == OK )	/* short description */
+	if ( getln (token,MAXLINE) == OK )	/* short description */
 	{
 		if ( strncmp (token,LINKPLACE,3) == 0 )
 		{
 			plink (token,SHORTDESC) ;
-			while ( getline (token,MAXLINE) == OK )
+			while ( getln (token,MAXLINE) == OK )
 				;
 		}
 		else
@@ -301,12 +294,12 @@ int place ()
 			{
 				apptext (token) ;
 			}
-			while ( getline (token,MAXLINE) == OK ) ;
+			while ( getln (token,MAXLINE) == OK ) ;
 			outtext (nxtplc) ;
 		}
 	}
 
-	if ( getline (token,MAXLINE) == OK )	/* long description */
+	if ( getln (token,MAXLINE) == OK )	/* long description */
 	{
 		if ( strncmp (token,LINKPLACE,3) == 0 )
 			plink (token,LONGDESC) ;
@@ -317,7 +310,7 @@ int place ()
 			{
 				apptext (token) ;
 			}
-			while ( getline (token,MAXLINE) == OK ) ;
+			while ( getln (token,MAXLINE) == OK ) ;
 			outtext (nxtplc+MAXPLACES) ;
 		}
 	}
@@ -326,10 +319,9 @@ int place ()
 	nxtplc ++ ;
 	nplace ++ ;
 
-	return ;
 }
 
-int plink (line,which)
+void plink (line,which)
   char *line ;
   int which ;
 {
@@ -390,20 +382,18 @@ int plink (line,which)
 		return ;
 	}
 
-	return ;
 }
 
-int rep ()
+void rep ()
 {
 	flushline () ;
 	compile (nxtrep) ;
 	nxtrep ++ ;
 	nrep ++ ;
 
-	return ;
 }
 
-int syn ()
+void syn ()
 {
 	register int val ;
 	extern struct symstr *define () ;
@@ -424,10 +414,9 @@ int syn ()
 			return ;
 		}
 	}
-	return ;
 }
 
-int text ()
+void text ()
 {
 	extern struct symstr *define () ;
 
@@ -443,17 +432,16 @@ int text ()
 
 	clrtext () ;
 
-	while ( getline (token,MAXLINE) == OK )
+	while ( getln (token,MAXLINE) == OK )
 		apptext (token) ;
 
 	outtext (nxttxt) ;
 
 	nxttxt ++ ;
 
-	return ;
 }
 
-int var ()
+void var ()
 {
 	extern struct symstr *define () ;
 
@@ -467,10 +455,9 @@ int var ()
 		nxtvar++ ;
 		nvars ++ ;
 	}
-	return ;
 }
 
-int verb ()
+void verb ()
 {
 	extern struct symstr *define () ;
 
@@ -495,5 +482,4 @@ int verb ()
 		}
 	}
 	nxtvrb++ ;
-	return ;
 }
