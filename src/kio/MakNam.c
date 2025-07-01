@@ -11,13 +11,11 @@
 
 #include "kio.h"
 
-int MakNam (name)
+void MakNam (name)
   char *name ;
 {
 	(void) strncpy (knam,name,10) ;
 	(void) strncpy (rnam,name,10) ;
 	(void) strncat (knam,".key",20) ;
 	(void) strncat (rnam,".rec",20) ;
-
-	return ;
 }

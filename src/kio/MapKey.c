@@ -11,12 +11,10 @@
 
 #include "kio.h"
 
-int MapKey (key,k)
+void MapKey (key,k)
   int key ;
   struct mkey *k ;
-
 {
 	k->b = key / MAXENTRIES ;
 	k->e = key % MAXENTRIES ;
-	return ;
 }
