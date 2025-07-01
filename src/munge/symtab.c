@@ -10,6 +10,7 @@
 */
 
 #include "mdefs.h"
+#include <string.h>
 
 #define MEMSIZ		1100
 
@@ -196,9 +197,9 @@ int pstab ()
 	return ;
 }
 
-#endif PSTAB
+#endif /* PSTAB */
 
-int wstab ()
+void wstab ()
 {
 	register int i ;
 	register struct symstr *p ;
@@ -243,5 +244,4 @@ int wstab ()
 	clrcode () ;
 	appcode (cnt) ;
 	outcode (SYMTABREC) ;
-	return ;
 }

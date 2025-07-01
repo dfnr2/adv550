@@ -2,6 +2,7 @@
 # Makefile for the Adventure Compiler.
 # 	(c) Ken Wellsch 1985
 #
+CC = /opt/local/bin/gcc
 CFLAGS = -O
 KLIB = ../kio/klib.a
 MLIB = mlib.a
@@ -32,7 +33,7 @@ $(MLIB): $(SRC)
 	ranlib $(MLIB)
 
 clean:
-	rm *.o
+	rm -f *.o
 
 backup:
 	cp Makefile $(HEADER) $(MAIN) $(SRC) bkup

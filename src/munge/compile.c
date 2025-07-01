@@ -10,6 +10,7 @@
 */
 
 #include "mdefs.h"
+#include <string.h>
 
 int compile (key)
   int key ;
@@ -25,7 +26,7 @@ int compile (key)
 		if ( findop (token,&opcode,&opnum) == ERROR )
 		{
 			synerr ("Compile","%s -- unrecognized opcode.",token) ;
-			return ;
+			return ERROR ;
 		}
 		if ( opnum < 0 )	/* infinite operand opcode */
 		{
@@ -44,7 +45,7 @@ int compile (key)
 				if ( gettok (token,MAXLINE) != OK )
 				{
 					synerr("Compile","missing operand(s)") ;
-					return ;
+					return ERROR ;
 				}
 				where = eval(token) ;
 				appcode (where) ;
@@ -52,12 +53,12 @@ int compile (key)
 			if ( gettok (token,MAXLINE) != NEWLINE )
 			{
 				synerr ("Compile","%s ignored.",token) ;
-				return ;
+				return ERROR ;
 			}
 		}
 	}
 	outcode (key) ;
-	return ;
+	return OK ;
 }
 
 static char *ops [MAXOPS] =

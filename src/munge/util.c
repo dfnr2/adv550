@@ -11,14 +11,13 @@
 
 #include "mdefs.h"
 
-int flushline ()
+void flushline ()
 {
 	register int c ;
 
 	while ( ( c = Getc () ) != '\n' )
 		if ( c == EOF )
 			break ;
-	return ;
 }
 
 int type (key)

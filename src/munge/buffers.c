@@ -20,38 +20,34 @@ static short int tbp = 0 ;
 static short int cbuf[MAXCBUF] ;
 static short int cbp = 0 ;
 
-int clrcode ()
+void clrcode ()
 {
 	cbp = 0 ;
-	return ;
 }
 
-int appcode (code)
+void appcode (code)
   short int code ;
 {
 	if ( cbp >= MAXCBUF )
 		error ("Appcode","code buffer overflow (%d)!",MAXCBUF) ;
 	cbuf[cbp++] = code ;
-	return ;
 }
 
-int outcode (key)
+void outcode (key)
   int key ;
 {
 	if ( cbp < 1 )
 		error ("Outcode","null code buffer!") ;
 	if ( writek(dbunit,key,(char *)cbuf,cbp*sizeof(short int)) == ERROR )
 		error ("Outcode","write error on key %d",key) ;
-	return ;
 }
 
-int clrtext ()
+void clrtext ()
 {
 	tbp = 0 ;
-	return ;
 }
 
-int apptext (line)
+void apptext (line)
   char line[] ;
 {
 	register int i ;
@@ -64,16 +60,13 @@ int apptext (line)
 	}
 	if ( tbp >= MAXTBUF )
 		error ("Apptext","text buffer overflow (%d)!",MAXTBUF) ;
-
-	return ;
 }
 
-int outtext (key)
+void outtext (key)
   int key ;
 {
 	if ( tbp < 1 )
 		return ;
 	if ( writek(dbunit,key,tbuf,tbp) == ERROR )
 		error ("Outtext","write error on key %d",key) ;
-	return ;
 }

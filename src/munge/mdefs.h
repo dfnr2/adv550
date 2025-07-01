@@ -53,7 +53,7 @@
 #define	LABEL		5
 #define	LIST		6
 #define	NOLIST		7
-#define	NULL		8
+#define	NULL_CMD	8
 #define	OBJECT		9
 #define	PLACE		10
 #define	REPEAT		11
@@ -106,3 +106,68 @@ extern	char token [] ;
 extern	int dbunit ;
 
 extern char clss[] ;
+
+/* System function declarations for K&R compatibility */
+extern void exit();
+extern void perror();
+
+/* KIO function prototypes */
+extern int creatk();
+extern int closek();
+extern int writek();
+
+/* MUNGE function prototypes */
+extern int openf();
+extern int makedb();
+extern void iodone();
+extern int parse();
+extern void wstab();
+extern void null();
+extern void obj();
+extern struct symstr *define();
+extern void clrcode();
+extern void appcode();
+extern void outcode();
+extern void clrtext();
+extern void apptext();
+extern void outtext();
+extern int chkmaj();
+extern int gettok();
+extern int findop();
+extern void flushline();
+extern int type();
+extern int push();
+extern int pop();
+extern int Getc();
+extern void Ungetc();
+extern void pbstr();
+extern void prlist();
+extern void closef();
+extern int error();
+extern void synerr();
+extern void errout();
+extern char *strsav();
+extern int getln();
+extern int exec();
+extern int major();
+extern int hash();
+extern int skip();
+extern void act();
+extern void at();
+extern void def();
+extern void inc();
+extern void init();
+extern void lab();
+extern void place();
+extern void rep();
+extern void syn();
+extern void text();
+extern void var();
+extern void verb();
+extern int compile();
+extern struct symstr *lookup();
+extern void plink();
+extern int dupk();
+extern int eval();
+extern int seval();
+extern int ctoi();

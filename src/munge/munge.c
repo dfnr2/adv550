@@ -10,8 +10,9 @@
 */
 
 #include "mdefs.h"
+#include <stdio.h>
 
-main (argc,argv)
+int main (argc,argv)
 
   int argc ;
   char *argv[] ;
@@ -48,9 +49,8 @@ int makedb (dbname)
 	return (unit) ;
 }
 
-int iodone ()
+void iodone ()
 {
 	closek (dbunit) ;
-	return ;
 }
 
