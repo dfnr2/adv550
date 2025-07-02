@@ -83,3 +83,6 @@ int nrep, ninit, nvars, nobj, nplace ;
 int here, there, status, argwd[LINELEN] ;
 
 int dbunit = -1 ;
+
+int lastlinewd[LINELEN];  // Storage for last parsed command
+int lastlinlen = 0;       // Number of words in last command

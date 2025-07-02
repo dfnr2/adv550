@@ -31,6 +31,44 @@ void command ()
 		linewd[linlen++] = val ;
 	}
 
+	/* Check if first word is "again" verb */
+	if ( linlen > 0 && class(linewd[0]) == VERB )
+	{
+		static int again_verb = -1 ;
+		if ( again_verb == -1 )
+			again_verb = find("AGAIN") ;
+		
+		if ( linewd[0] == again_verb && again_verb != -1 )
+		{
+			if ( lastlinlen > 0 )
+			{
+				/* Restore last command */
+				linlen = lastlinlen ;
+				for ( i = 0 ; i < linlen ; i++ )
+					linewd[i] = lastlinewd[i] ;
+			}
+			else
+			{
+				/* No previous command to repeat */
+				linlen = 0 ;
+			}
+		}
+		/* Save this command for future "again" (but not if it was "again") */
+		else if ( linewd[0] != again_verb )
+		{
+			lastlinlen = linlen ;
+			for ( i = 0 ; i < linlen ; i++ )
+				lastlinewd[i] = linewd[i] ;
+		}
+	}
+	/* Save non-verb commands too */
+	else if ( linlen > 0 )
+	{
+		lastlinlen = linlen ;
+		for ( i = 0 ; i < linlen ; i++ )
+			lastlinewd[i] = linewd[i] ;
+	}
+
 	for ( i = 0 ; i < LINELEN ; i++ )
 	{
 		switch (class(linewd[i]))

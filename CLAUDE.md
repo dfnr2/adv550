@@ -180,3 +180,221 @@ The test suite covers:
 - Edge cases and error conditions
 
 All tests should pass, demonstrating that the path prioritization works correctly across various scenarios.
+
+## Implementing the "AGAIN" Verb
+
+This section provides detailed instructions for implementing an "again" verb that repeats the last command.
+
+### Overview
+
+The "again" command will allow players to repeat their last non-"again" command. This is useful for repetitive actions like fighting monsters, taking multiple objects, or navigating through similar passages.
+
+### Implementation Steps
+
+#### Step 1: Add Storage for Last Command
+
+First, we need to add storage for the last command in the global state. Edit `src/adv/advglob.c`:
+
+```c
+// Add after line 82 (after the existing global variables)
+char lastlex[LEXLEN][LEXSIZ];  // Storage for last command words
+int lastlexcnt = 0;             // Number of words in last command
+```
+
+Also declare these as extern in `src/adv/adefs.h`:
+
+```c
+// Add after line 134 (after other extern declarations)
+extern char lastlex[LEXLEN][LEXSIZ];
+extern int lastlexcnt;
+```
+
+#### Step 2: Add AGAIN Verb to Database
+
+Edit `adv_db/verbs.d` to add the AGAIN verb. Insert this line after line 100 (before the terminating 101):
+
+```
+   101→VERB	AGAIN,G,REPEAT
+   102→
+```
+
+Note: The verb number will be 101, and we add synonyms "G" (short form) and "REPEAT".
+
+#### Step 3: Modify Command Processing
+
+Edit `src/adv/command.c` to save commands and handle "again". Replace the entire `readln` function (lines 94-130) with:
+
+```c
+int readln (words)
+  char words[LEXLEN][LEXSIZ] ;
+{
+	register int cnt, i ;
+	register char *b ;
+	char buffer[LINESIZE] ;
+	int is_again = 0 ;
+
+	printf ("? ") ;
+
+	if ( fgets (buffer,LINESIZE,stdin) == NULL )
+		exit (1) ;
+
+#ifdef STATUS
+	if ( strcmp (buffer,"~status\n") == 0 )
+	{
+		pcstat () ;
+		(void) strcpy (buffer,"LOOK\n") ;
+	}
+#endif /* STATUS */
+
+	cnt = 0 ;
+	for ( cnt = 0, b = buffer ; *b != '\n' && *b != '\0' ; )
+	{
+		while ( *b == ' ' || *b == '\t' )
+			b++ ;
+	
+		for ( i = 0 ; *b != ' ' && *b != '\t' && *b != '\n' && *b != '\0' ; b++ )
+			if ( i < (LEXSIZ-1) )
+				words[cnt][i++] = *b ;
+	
+		words[cnt][i] = EOS ;
+		if ( i > 0 )
+			if ( ++cnt >= LEXLEN )
+				break ;
+	}
+
+	/* Check if this is an "again" command */
+	if ( cnt > 0 )
+	{
+		char temp[LEXSIZ] ;
+		(void) strcpy (temp, words[0]) ;
+		low2up (temp) ;
+		if ( strcmp(temp, "AGAIN") == 0 || strcmp(temp, "G") == 0 || 
+		     strcmp(temp, "REPEAT") == 0 )
+		{
+			is_again = 1 ;
+		}
+	}
+
+	/* If "again", restore last command */
+	if ( is_again && lastlexcnt > 0 )
+	{
+		cnt = lastlexcnt ;
+		for ( i = 0 ; i < cnt ; i++ )
+			(void) strcpy (words[i], lastlex[i]) ;
+		
+		printf (">> ") ;
+		for ( i = 0 ; i < cnt ; i++ )
+		{
+			if ( i > 0 ) printf (" ") ;
+			printf ("%s", words[i]) ;
+		}
+		printf ("\n") ;
+	}
+	/* Otherwise, save this command for future "again" */
+	else if ( cnt > 0 && !is_again )
+	{
+		lastlexcnt = cnt ;
+		for ( i = 0 ; i < cnt ; i++ )
+			(void) strcpy (lastlex[i], words[i]) ;
+	}
+
+	return (cnt) ;
+}
+```
+
+Also add the string.h include at the top of command.c if not already present:
+
+```c
+// Add after line 12
+#include <string.h>
+```
+
+#### Step 4: Rebuild Everything
+
+After making all the code changes:
+
+```bash
+# Clean everything first
+make clean
+
+# Rebuild all components
+make
+
+# The make command will automatically:
+# 1. Build kio library
+# 2. Build munge compiler
+# 3. Build adventure interpreter
+# 4. Recompile the database with the new AGAIN verb
+```
+
+### Testing the Implementation
+
+#### Basic Test Cases
+
+1. **Simple Command Repeat**:
+   ```
+   ? take lamp
+   [game response]
+   ? again
+   >> take lamp
+   [same action repeated]
+   ```
+
+2. **Short Form**:
+   ```
+   ? north
+   [moves north]
+   ? g
+   >> north
+   [moves north again]
+   ```
+
+3. **Multiple Word Commands**:
+   ```
+   ? take all
+   [takes multiple items]
+   ? again
+   >> take all
+   [repeats the take all command]
+   ```
+
+4. **First Command Edge Case**:
+   ```
+   ? again
+   [should do nothing or give error]
+   ```
+
+5. **Chain of Different Commands**:
+   ```
+   ? look
+   [description]
+   ? inventory
+   [shows inventory]
+   ? again
+   >> inventory
+   [shows inventory again, not look]
+   ```
+
+### Troubleshooting
+
+#### If AGAIN verb is not recognized:
+1. Check that `adv_db/verbs.d` was edited correctly
+2. Ensure database was recompiled: `src/munge/munge < comcave`
+3. Verify new `adv.key` and `adv.rec` files were created
+
+#### If commands are not being saved:
+1. Check that global variables were added to both `advglob.c` and `adefs.h`
+2. Verify the modified `readln` function is saving non-again commands
+
+#### If compilation fails:
+1. Ensure `string.h` is included in `command.c`
+2. Check for typos in variable names
+3. Make sure array declarations match between files
+
+### Implementation Notes
+
+- The implementation stores the raw lexical tokens before parsing, allowing exact replay
+- The ">> " prefix shows the repeated command for clarity
+- Only non-"again" commands are saved to prevent recursion
+- The verb ID 101 is used (next available after existing verbs)
+- Case-insensitive matching works for "AGAIN", "again", "G", "g", etc.
