@@ -29,6 +29,9 @@ $(ALIB): $(OBJ)
 	ar ru $(ALIB) $(OBJ)
 	ranlib $(ALIB)
 
+test:
+	@echo "No tests defined for adv module yet"
+
 clean:
 	rm -f *.o
 

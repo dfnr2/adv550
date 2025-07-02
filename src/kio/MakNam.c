@@ -9,13 +9,28 @@
 **
 */
 
+#include <stdio.h>
+#include <string.h>
 #include "kio.h"
 
 void MakNam (name)
   char *name ;
 {
-	(void) strncpy (knam,name,10) ;
-	(void) strncpy (rnam,name,10) ;
-	(void) strncat (knam,".key",20) ;
-	(void) strncat (rnam,".rec",20) ;
+	static int initialized = 0;
+	static char keypath[256];
+	static char recpath[256];
+	
+	if (!initialized) {
+		if (findDatabaseFiles(name, keypath, recpath) < 0) {
+			/* Fall back to original behavior */
+			snprintf(knam, 256, "%s.key", name);
+			snprintf(rnam, 256, "%s.rec", name);
+		} else {
+			strncpy(knam, keypath, 255);
+			strncpy(rnam, recpath, 255);
+			knam[255] = '\0';
+			rnam[255] = '\0';
+		}
+		initialized = 1;
+	}
 }
