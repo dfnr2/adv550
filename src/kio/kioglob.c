@@ -15,7 +15,7 @@ struct iblk Iblk ;
 
 short int Sblk[MAXIBLK] ;
 
-char knam[20], rnam[20] ;
+char knam[256], rnam[256] ;
 
 int Modified = 0 ;
 int CurBlk = -1 ;

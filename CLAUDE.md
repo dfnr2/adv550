@@ -128,13 +128,55 @@ To run the Adventure game, you need:
 2. Database files: `adv.key` and `adv.rec` 
 3. The database files must be accessible from where you run `adv`
 
-### Current File Location Behavior
-The game currently looks for `adv.key` and `adv.rec` files in the current working directory only. The KIO library (`MakNam.c`) simply appends `.key` and `.rec` to the base name "adv" with no path prefix.
+### Database File Path Prioritization (Implemented)
+The game now uses path prioritization to find `adv.key` and `adv.rec` files. The search order is:
 
-### Planned Enhancement: Smart File Location
-A future improvement would be to search for database files in this order:
-1. **Same directory as the `adv` executable** - allows running from anywhere
-2. **`$ADVPATH` environment variable** - user-specified database location  
-3. **Current working directory** - current behavior (fallback)
+1. **`$ADVPATH` environment variable** - user-specified database location (highest priority)
+2. **Current working directory** - for local development work
+3. **Same directory as the `adv` executable** - system default (fallback)
 
-This would make the game more portable and user-friendly, similar to how many Unix utilities locate their data files.
+This follows standard Unix conventions for data file location.
+
+#### Usage Examples
+
+**Use custom database location** (highest priority):
+```bash
+export ADVPATH=/home/user/adventure-data
+./src/adv/adv  # uses files from ADVPATH directory
+```
+
+**Traditional usage** (current directory):
+```bash
+./src/adv/adv  # finds adv.key and adv.rec in current dir
+```
+
+**Run from anywhere** (executable directory fallback):
+```bash
+cd /tmp
+/path/to/adventure/src/adv/adv  # uses files next to adv executable
+```
+
+#### Implementation Details
+- Both `.key` and `.rec` files must exist in the same location
+- If only partial files exist in a location, search continues to next location
+- The `findDatabaseFiles()` function in `src/kio/util.c` handles the path search
+- Test suite in `src/kio/test_path.c` available via `make test-path`
+
+## Testing
+
+### Path Detection Tests
+A test suite is available to verify the path prioritization functionality:
+
+```bash
+make test-path
+```
+
+The test suite covers:
+- Basic functionality with real adventure files
+- Partial file scenarios (only `.key` or only `.rec` exists)
+- ADVPATH environment variable behavior
+- Fallback chain validation
+- Mixed scenarios with files in different locations
+- Edge cases and error conditions
+
+All tests should pass, demonstrating that the path prioritization works correctly across various scenarios.

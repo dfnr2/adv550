@@ -17,8 +17,16 @@ print:
 	cd src/munge ; make print
 	cd src/adv ; make print
 
+test:
+	cd src/kio && make test
+	cd src/munge && make test
+	cd src/adv && make test
+
+test-path:
+	cd src/kio && make test-path
+
 clean:
-	cd src/kio ; rm -f klib.a *.o
+	cd src/kio ; rm -f klib.a *.o test_path
 	cd src/munge ; rm -f munge mlib.a *.o
 	cd src/adv ; rm -f adv alib.a *.o
 	rm -f adv.key adv.rec

@@ -28,6 +28,9 @@ $(MLIB): $(OBJ)
 	ar ru $(MLIB) $(OBJ)
 	ranlib $(MLIB)
 
+test:
+	./test_munge.sh
+
 clean:
 	rm -f *.o
 

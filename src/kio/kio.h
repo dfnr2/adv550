@@ -10,14 +10,7 @@
 */
 
 #include <sys/file.h>
-
-/* System function declarations for K&R compatibility */
-extern long lseek();
-extern int read();
-extern int write();
-extern int close();
-extern char *strncpy();
-extern char *strncat();
+#include <unistd.h>
 
 /* KIO function prototypes */
 extern int GetBlk();
@@ -28,6 +21,7 @@ extern int MakBlk();
 extern long MapBlk();
 extern void MapKey();
 extern void MakNam();
+extern int findDatabaseFiles();
 extern int creatk();
 extern int openk();
 extern int closek();
@@ -58,7 +52,7 @@ struct iblk
 
 extern struct iblk Iblk ;
 extern short int Sblk[MAXIBLK] ;
-extern char knam[20], rnam[20] ;
+extern char knam[256], rnam[256] ;
 extern int Modified ;
 extern int CurBlk ;
 extern long int RecLoc ;

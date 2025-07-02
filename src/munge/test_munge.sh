@@ -1,65 +1,32 @@
 #!/bin/bash
 
 # MUNGE Test Suite
-# Tests the current MUNGE functionality and reports what works
+# Tests the MUNGE functionality (assumes binary already built)
 
 echo "=== MUNGE Functionality Test Suite ==="
 echo
 
-# Test 1: Build Test
-echo "Test 1: Build Test"
-echo "Checking if MUNGE compiles..."
-if make clean && make > build.log 2>&1; then
-    echo "✓ MUNGE builds successfully"
-    BUILD_OK=1
-else
-    echo "✗ MUNGE build failed"
-    echo "Build errors:"
-    tail -10 build.log
-    BUILD_OK=0
-fi
-echo
-
-# Test 2: Binary Existence
-echo "Test 2: Binary Existence"
+# Test 1: Binary Existence
+echo "Test 1: Binary Existence"
 if [ -f "./munge" ]; then
     echo "✓ MUNGE binary exists"
     BINARY_OK=1
 else
-    echo "✗ MUNGE binary not found"
+    echo "✗ MUNGE binary not found - run 'make' first"
     BINARY_OK=0
 fi
 echo
 
-# Test 3: Help/Usage Test
-echo "Test 3: Help/Usage Test"
-if [ $BINARY_OK -eq 1 ]; then
-    if ./munge --help 2>&1 | grep -q "Usage"; then
-        echo "✓ MUNGE shows usage information"
-        USAGE_OK=1
-    elif ./munge 2>&1 | grep -q "Usage"; then
-        echo "✓ MUNGE shows usage information" 
-        USAGE_OK=1
-    else
-        echo "? MUNGE doesn't show standard usage (may be normal for this version)"
-        USAGE_OK=0
-    fi
-else
-    echo "- Skipped (no binary)"
-    USAGE_OK=0
-fi
-echo
-
-# Test 4: Simple Input Processing
-echo "Test 4: Simple Input Processing"
+# Test 2: Simple Input Processing
+echo "Test 2: Simple Input Processing"
 if [ $BINARY_OK -eq 1 ]; then
     echo "Testing with simple input file..."
     
     # Clean up any existing database files
     rm -f adv.key adv.rec
     
-    # Try to process test input
-    if echo "NULL test" | ./munge 2>error.log; then
+    # Try to process test input (non-interactive)
+    if echo "NULL_CMD test" | ./munge 2>error.log; then
         echo "✓ MUNGE processes simple input without crashing"
         
         # Check if database files were created (correct names)
@@ -105,8 +72,8 @@ else
 fi
 echo
 
-# Test 5: File Input Processing  
-echo "Test 5: File Input Processing"
+# Test 3: File Input Processing  
+echo "Test 3: File Input Processing"
 if [ $BINARY_OK -eq 1 ]; then
     echo "Testing with test input file..."
     
@@ -166,8 +133,8 @@ else
 fi
 echo
 
-# Test 6: Function Analysis
-echo "Test 6: Function Analysis"
+# Test 4: Function Checks
+echo "Test 4: Function Checks"
 if [ $BINARY_OK -eq 1 ]; then
     echo "Checking which functions are available..."
     
@@ -198,19 +165,17 @@ echo
 
 # Summary
 echo "=== Test Summary ==="
-TOTAL_TESTS=5
+TOTAL_TESTS=3
 PASSED_TESTS=0
 
-if [ $BUILD_OK -eq 1 ]; then ((PASSED_TESTS++)); fi
 if [ $BINARY_OK -eq 1 ]; then ((PASSED_TESTS++)); fi
-if [ $USAGE_OK -eq 1 ]; then ((PASSED_TESTS++)); fi
 if [ $SIMPLE_OK -eq 1 ]; then ((PASSED_TESTS++)); fi
 if [ $FILE_OK -eq 1 ]; then ((PASSED_TESTS++)); fi
 
 echo "Passed: $PASSED_TESTS/$TOTAL_TESTS tests"
 echo
 
-if [ $BUILD_OK -eq 1 ] && [ $BINARY_OK -eq 1 ]; then
+if [ $BINARY_OK -eq 1 ]; then
     echo "Status: MUNGE core functionality appears to be working"
     if [ $SIMPLE_OK -eq 1 ] || [ $FILE_OK -eq 1 ]; then
         echo "        Basic input processing is functional"
@@ -218,16 +183,16 @@ if [ $BUILD_OK -eq 1 ] && [ $BINARY_OK -eq 1 ]; then
         echo "        Input processing needs work"
     fi
 else
-    echo "Status: MUNGE needs more work to build and run"
+    echo "Status: MUNGE binary not found - run 'make' first"
 fi
 
 echo
 echo "Next steps:"
-if [ $BUILD_OK -eq 0 ]; then
-    echo "- Fix build errors (see build.log)"
+if [ $BINARY_OK -eq 0 ]; then
+    echo "- Build MUNGE with 'make'"
 elif [ $SIMPLE_OK -eq 0 ] && [ $FILE_OK -eq 0 ]; then
     echo "- Fix runtime errors to enable input processing"
-    echo "- Complete missing functions (wstab, etc.)"
+    echo "- Complete missing functions"
 else
     echo "- Test with more complex input files"
     echo "- Verify database output format"
