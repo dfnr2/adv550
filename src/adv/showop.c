@@ -10,6 +10,7 @@
 */
 
 #include "adefs.h"
+#include <stdio.h>
 
 static char *ops [MAXOPS] =
 {
@@ -32,7 +33,7 @@ static char *ops [MAXOPS] =
 
 int CurKey = -1 ;
 
-int showop (active,op,args)
+void showop (active,op,args)
   int active, op ;
   short int args[3] ;
 {

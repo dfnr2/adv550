@@ -10,6 +10,7 @@
 */
 
 #include "adefs.h"
+#include <stdio.h>
 
 int condition (bp,cbuf,len)
   int bp, len ;
@@ -35,7 +36,7 @@ int condition (bp,cbuf,len)
 
 #ifdef SHOWOP
 		showop (YES,instr,op) ;
-#endif SHOWOP
+#endif /* SHOWOP */
 
 		if ( instr == NOT )
 		{
@@ -166,7 +167,7 @@ int flushc (bp,cbuf,len)
 
 #ifdef SHOWOP
 		showop (NO,instr,&(cbuf[bp])) ;
-#endif SHOWOP
+#endif /* SHOWOP */
 
 		if ( instr == NOT )
 			continue ;

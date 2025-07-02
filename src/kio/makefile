@@ -19,19 +19,15 @@ HEADER = kio.h
 
 all: $(KLIB)
 
-$(SRC): $(HEADER)
-	touch $@
+.c.o: $(HEADER)
+	$(CC) $(CFLAGS) -c $<
 
-$(KLIB): $(SRC)
-	-ar x $(KLIB)
-	-cc $(CFLAGS) -c $?
-	rm -f $(KLIB)
-	-ar ru $(KLIB) $(OBJ)
-	rm -f *.o
+$(KLIB): $(OBJ)
+	ar ru $(KLIB) $(OBJ)
 	ranlib $(KLIB)
 
 clean:
-	rm *.o
+	rm -f *.o
 
 backup:
 	cp Makefile $(HEADER) $(SRC) bkup

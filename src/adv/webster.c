@@ -11,7 +11,7 @@
 
 #include "adefs.h"
 
-int webster ()
+void webster ()
 {
 	register int key, i, j ;
 	int totsym, size, val ;

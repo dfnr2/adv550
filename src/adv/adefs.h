@@ -129,7 +129,7 @@
 #define	TEXT		4
 #define	OBJECT		5
 #define	VARIABLE	6
-#define	NULL		7
+#define	NULL_TYPE	7
 
 #define	INHAND		(-1)
 #define	REPLACE		'#'
@@ -180,3 +180,51 @@ extern int here, there, status, argwd[] ;
 
 extern int dbunit ;
 extern char clss[] ;
+
+/* Function prototypes */
+extern int error();
+extern void closek();
+extern int readk();
+extern int openk();
+extern int bitval();
+extern void setbit();
+extern void setval();
+extern int eval();
+extern void movobj();
+extern int near();
+extern int ref();
+extern void wcopy();
+extern int find();
+extern void define();
+extern int rdcode();
+extern void webster();
+extern void command();
+extern void low2up();
+extern int readln();
+extern void say();
+extern void sayval();
+extern void saynam();
+extern int findnam();
+extern void up2low();
+extern void showop();
+extern int process();
+extern void executive();
+extern int saykey();
+extern int rnd();
+extern int query();
+extern int flushc();
+extern int condition();
+extern int savgm();
+extern int resgm();
+extern int delgm();
+extern void ClrCache();
+extern int prime();
+extern int fini();
+extern int svar();
+extern int nextrec();
+extern int hash();
+extern void setup();
+extern void opendb();
+extern void movobj();
+extern void setbit();
+extern void setval();

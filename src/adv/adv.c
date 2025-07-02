@@ -10,8 +10,11 @@
 */
 
 #include "adefs.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
 
-main ()
+int main ()
 {
 	srandom (time(0)+getpid()) ;
 
@@ -21,7 +24,7 @@ main ()
 
 #ifdef PSTAB
 	pstab () ;
-#endif PSTAB
+#endif /* PSTAB */
 
 	process (INITIAL) ;
 
@@ -29,7 +32,7 @@ main ()
 		process (REPEAT) ;
 }
 
-int setup ()
+void setup ()
 {
 	register int i ;
 
@@ -53,12 +56,12 @@ int setup ()
 
 #ifdef CACHE
 	ClrCache () ;
-#endif CACHE
+#endif /* CACHE */
 
 	return ;
 }
 
-int opendb(name)
+void opendb(name)
   char *name ;
 {
 	dbunit = openk (name) ;

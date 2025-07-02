@@ -10,8 +10,10 @@
 */
 
 #include "adefs.h"
+#include <stdio.h>
+#include <string.h>
 
-int say (key)
+void say (key)
   register int key ;
 {
 	register int rec ;
@@ -39,7 +41,7 @@ int say (key)
 	return ;
 }
 
-int sayval (key,val)
+void sayval (key,val)
   int key, val ;
 {
 	register int rec, i, endb ;
@@ -104,7 +106,7 @@ int saykey (key)
 	return (rec) ;
 }
 
-int saynam (key,op)
+void saynam (key,op)
   int key, op ;
 {
 	register int i, j ;
@@ -157,7 +159,7 @@ int findnam (val,s)
 	return (ERROR) ;
 }
 
-int up2low (word)
+void up2low (word)
   register char *word ;
 {
 	for ( ; *word ; word++ )
