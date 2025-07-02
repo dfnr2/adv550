@@ -56,7 +56,7 @@ char clss [] =
 	OBJECT,
 	OBJECT,
 	VARIABLE,
-	NULL,
+	NULL_TYPE,
 	0
 } ;
 

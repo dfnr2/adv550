@@ -95,7 +95,7 @@ int eval (key)
 
 #endif logical
 
-int movobj (key,loc)
+void movobj (key,loc)
   int key, loc ;
 {
 	if ( class(key) != OBJECT )

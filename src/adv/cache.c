@@ -10,8 +10,13 @@
 */
 
 #include "adefs.h"
+#include <string.h>
 
 #ifdef CACHE
+/* Forward declarations */
+static int GetCache();
+static void PutCache();
+static int ok2sav();
 struct ctabstr
 {
 	short int  c_key ;
@@ -23,7 +28,7 @@ static int full = NO ;
 static struct ctabstr ctab[CACHESIZE] ;
 static short int cache[MAXCACHE] ;
 static int cachesize = 0 ;
-#endif CACHE
+#endif /* CACHE */
 /*
 **	rdcode -- fetch the code addressed by key.
 **
@@ -42,7 +47,7 @@ int rdcode (key)
 #ifdef CACHE
 	if ( ( endb = GetCache (key) ) > 0 )	/* already in memory? */
 		return (endb) ;
-#endif CACHE
+#endif /* CACHE */
 
 	if ( ( endb = readk (dbunit,key,codebuf,BUFSIZE*2) ) < 1 )
 		return (ERROR) ;
@@ -57,7 +62,7 @@ int rdcode (key)
 		return (endb) ;
 
 	PutCache (key,endb) ;		/* lets keep a copy around */
-#endif CACHE
+#endif /* CACHE */
 
 	return (endb) ;
 }
@@ -95,7 +100,7 @@ static int ok2sav (key)
 	return (val) ;
 }
 
-static int PutCache (key,size)
+static void PutCache (key,size)
   int key, size ;
 {
 	register int i ;
@@ -158,7 +163,7 @@ static int GetCache (key)
 	return (size) ;
 }
 
-int ClrCache ()
+void ClrCache ()
 {
 	register int i ;
 
@@ -170,7 +175,7 @@ int ClrCache ()
 	return ;
 }
 
-int wcopy (a,b,n)
+void wcopy (a,b,n)
   register short int *a, *b ;
   register int n ;
 {
@@ -200,6 +205,6 @@ int pcstat ()
 	return ;
 }
 
-#endif STATUS
+#endif /* STATUS */
 
-#endif CACHE
+#endif /* CACHE */

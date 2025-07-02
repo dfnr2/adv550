@@ -11,7 +11,7 @@
 
 #include "adefs.h"
 
-int command ()
+void command ()
 {
 	register int i, k ;
 	int cnt, val ;
@@ -26,7 +26,7 @@ int command ()
 	{
 		low2up (lex[i]) ;
 		val = find(lex[i]) ;
-		if ( class(val) == NULL )
+		if ( class(val) == NULL_TYPE )
 			continue ;
 		linewd[linlen++] = val ;
 	}
@@ -76,7 +76,7 @@ int command ()
 	return ;
 }
 
-int low2up (word)
+void low2up (word)
   register char *word ;
 {
 	for ( ; *word ; word++ )
@@ -85,9 +85,10 @@ int low2up (word)
 	return ;
 }
 
-#undef NULL
 #undef EOF
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #define LINESIZE	134
 
 int readln (words)
@@ -108,7 +109,7 @@ int readln (words)
 		pcstat () ;
 		(void) strcpy (buffer,"LOOK\n") ;
 	}
-#endif STATUS
+#endif /* STATUS */
 
 	cnt = 0 ;
 	for ( cnt = 0, b = buffer ; *b != '\n' && *b != '\0' ; )

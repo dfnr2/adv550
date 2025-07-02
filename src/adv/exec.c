@@ -10,8 +10,10 @@
 */
 
 #include "adefs.h"
+#include <string.h>
+#include <stdlib.h>
 
-int executive (a,b)
+void executive (a,b)
   int a, b ;
 {
 	static int saveval ;
@@ -42,7 +44,7 @@ int executive (a,b)
 		case 4:
 #ifdef CACHE
 			ClrCache () ;
-#endif CACHE
+#endif /* CACHE */
 			setval (b,0) ;
 			break ;
 

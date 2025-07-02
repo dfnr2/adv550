@@ -10,10 +10,12 @@
 */
 
 #include "adefs.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifdef SHOWOP
 	extern int CurKey ;
-#endif SHOWOP
+#endif /* SHOWOP */
 
 int process (key)
   int key ;
@@ -35,7 +37,7 @@ int process (key)
 		while ( rec == ERROR || ( endb = rdcode (rec) ) == ERROR )
 		{
 			if ( calls <= 0 )
-				return ;
+				return ERROR ;
 			rec = srec [calls] ;
 			bp = sbp [calls] ;
 			dos = sdos [calls] ;
@@ -44,7 +46,7 @@ int process (key)
 
 #ifdef SHOWOP
 		CurKey = rec ;
-#endif SHOWOP
+#endif /* SHOWOP */
 		while ( bp < endb )
 		{
 			instr = codebuf [bp] ;
@@ -60,7 +62,7 @@ int process (key)
 
 #ifdef SHOWOP
 			showop (YES,instr,op) ;
-#endif SHOWOP
+#endif /* SHOWOP */
 			switch (instr)
 			{
 			  case ADD:
@@ -331,7 +333,7 @@ int process (key)
 				setval (there,i) ;
 				setbit (there,j) ;
 				setbit (status,(bitval(status)|MOVED)) ;
-				return ;
+				return ERROR ;
 
 			  case MULT:
 
@@ -363,7 +365,7 @@ int process (key)
 
 			  case QUIT:
 
-				return ;
+				return ERROR ;
 
 			  case RANDOM:
 
@@ -397,7 +399,7 @@ int process (key)
 				setbit (there,j) ;
 				setbit (status,(bitval(status)|MOVED)) ;
 				say (op[2]) ;
-				return ;
+				return ERROR ;
 
 			  case STOP:
 

@@ -19,22 +19,18 @@ OBJ =	error.o advglob.o cache.o command.o condition.o \
 HEADER = adefs.h
 
 adv: $(ALIB)
-	cc $(CFLAGS) $(MAIN) alib.a $(KLIB) -o adv
+	cc $(CFLAGS) $(MAIN) $(ALIB) $(KLIB) -o adv
 	size adv
 
-$(SRC):: $(HEADER)
-	touch $@
+.c.o: $(HEADER)
+	cc $(CFLAGS) -c $<
 
-$(ALIB): $(SRC)
-	-ar x $(ALIB)
-	cc $(CFLAGS) -c $?
-	rm -f $(ALIB)
-	-ar ru $(ALIB) $(OBJ)
-	rm -f *.o
+$(ALIB): $(OBJ)
+	ar ru $(ALIB) $(OBJ)
 	ranlib $(ALIB)
 
 clean:
-	rm *.o
+	rm -f *.o
 
 backup:
 	cp Makefile $(HEADER) $(SRC) $(MAIN) bkup

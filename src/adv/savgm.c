@@ -10,6 +10,8 @@
 */
 
 #include "adefs.h"
+#include <unistd.h>
+#include <fcntl.h>
 
 #define READONLY	0
 #define WRITEONLY	1

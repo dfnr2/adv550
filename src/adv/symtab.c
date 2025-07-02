@@ -10,13 +10,14 @@
 */
 
 #include "adefs.h"
+#include <string.h>
 
 #define SMEMSIZ		450
 
 static struct symstr smem[SMEMSIZ] ;
 static int psmem = SMEMSIZ ;
 
-int define (nam,val)
+void define (nam,val)
   char *nam ;
   int val ;
 {
@@ -113,4 +114,4 @@ int pstab ()
 	return ;
 }
 
-#endif PSTAB
+#endif /* PSTAB */

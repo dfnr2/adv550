@@ -18,18 +18,14 @@ OBJ =	buffers.o compile.o fio.o glob.o \
 HEADER = mdefs.h
 
 munge: $(MAIN) $(MLIB)
-	cc $(CFLAGS) $(MAIN) mlib.a $(KLIB) -o munge
+	$(CC) $(CFLAGS) $(MAIN) $(MLIB) $(KLIB) -o munge
 	size munge
 
-$(SRC) $(MAIN):: mdefs.h
-	touch $@
+.c.o: $(HEADER)
+	$(CC) $(CFLAGS) -c $<
 
-$(MLIB): $(SRC)
-	-ar x $(MLIB)
-	-cc $(CFLAGS) -c $?
-	rm -f $(MLIB)
-	-ar ru $(MLIB) $(OBJ)
-	rm -f *.o
+$(MLIB): $(OBJ)
+	ar ru $(MLIB) $(OBJ)
 	ranlib $(MLIB)
 
 clean:
