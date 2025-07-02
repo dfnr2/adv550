@@ -86,3 +86,5 @@ int dbunit = -1 ;
 
 int lastlinewd[LINELEN];  // Storage for last parsed command
 int lastlinlen = 0;       // Number of words in last command
+int lastverb = -1;        // Last verb used (for "it" substitution)
+int lastobject = -1;      // Last object referenced (for "it" substitution)

@@ -183,6 +183,8 @@ extern char clss[] ;
 
 extern int lastlinewd[];
 extern int lastlinlen;
+extern int lastverb;
+extern int lastobject;
 
 /* Function prototypes */
 extern int error();

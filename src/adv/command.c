@@ -10,6 +10,10 @@
 */
 
 #include "adefs.h"
+#include <string.h>
+
+/* Forward declaration */
+int verb_takes_object() ;
 
 void command ()
 {
@@ -25,11 +29,26 @@ void command ()
 	for ( i = 0 ; i < cnt ; i++ )
 	{
 		low2up (lex[i]) ;
+		
+		/* Special handling for "it" pronoun */
+		if ( strcmp(lex[i], "IT") == 0 )
+		{
+			/* Check if we can substitute a previous object */
+			if ( i > 0 && linlen > 0 && class(linewd[0]) == VERB && 
+			     lastobject != -1 && lastverb != -1 && verb_takes_object(lastverb) )
+			{
+				linewd[linlen++] = lastobject ;
+				continue ;
+			}
+			/* Otherwise skip "it" - it will cause an error later */
+		}
+		
 		val = find(lex[i]) ;
 		if ( class(val) == NULL_TYPE )
 			continue ;
 		linewd[linlen++] = val ;
 	}
+
 
 	/* Check if first word is "again" verb */
 	if ( linlen > 0 && class(linewd[0]) == VERB )
@@ -111,7 +130,75 @@ void command ()
 			break ;
 	}
 
+	/* Track last verb and object for "it" substitution */
+	if ( linlen > 0 && class(linewd[0]) == VERB )
+	{
+		static int it_obj = -1 ;
+		if ( it_obj == -1 )
+			it_obj = find("IT") ;
+		
+		lastverb = linewd[0] ;
+		
+		/* Check if we have an object in position 1 */
+		if ( linlen > 1 && class(linewd[1]) == OBJECT && linewd[1] != it_obj )
+		{
+			lastobject = linewd[1] ;
+		}
+		/* For some verbs, object might be in position 2 (e.g., "pick up lamp") */
+		else if ( linlen > 2 && class(linewd[2]) == OBJECT && linewd[2] != it_obj )
+		{
+			lastobject = linewd[2] ;
+		}
+	}
+
 	return ;
+}
+
+/* Check if a verb typically takes an object */
+int verb_takes_object (verb)
+  int verb ;
+{
+	static int object_verbs[30] ;
+	static int n_object_verbs = -1 ;
+	register int i ;
+	
+	/* Initialize the list of object-taking verbs on first call */
+	if ( n_object_verbs == -1 )
+	{
+		n_object_verbs = 0 ;
+		/* Add common object-taking verbs */
+		object_verbs[n_object_verbs++] = find("GET") ;
+		object_verbs[n_object_verbs++] = find("DROP") ;
+		object_verbs[n_object_verbs++] = find("TAKE") ;
+		object_verbs[n_object_verbs++] = find("EXAMINE") ;
+		object_verbs[n_object_verbs++] = find("LOOK") ;
+		object_verbs[n_object_verbs++] = find("OPEN") ;
+		object_verbs[n_object_verbs++] = find("CLOSE") ;
+		object_verbs[n_object_verbs++] = find("READ") ;
+		object_verbs[n_object_verbs++] = find("EAT") ;
+		object_verbs[n_object_verbs++] = find("DRINK") ;
+		object_verbs[n_object_verbs++] = find("THROW") ;
+		object_verbs[n_object_verbs++] = find("WAVE") ;
+		object_verbs[n_object_verbs++] = find("RUB") ;
+		object_verbs[n_object_verbs++] = find("FILL") ;
+		object_verbs[n_object_verbs++] = find("FEED") ;
+		object_verbs[n_object_verbs++] = find("BREAK") ;
+		object_verbs[n_object_verbs++] = find("KILL") ;
+		object_verbs[n_object_verbs++] = find("ATTACK") ;
+		object_verbs[n_object_verbs++] = find("LIGHT") ;
+		object_verbs[n_object_verbs++] = find("EXTINGUISH") ;
+		object_verbs[n_object_verbs++] = find("ON") ;
+		object_verbs[n_object_verbs++] = find("OFF") ;
+		object_verbs[n_object_verbs++] = find("POUR") ;
+		object_verbs[n_object_verbs++] = find("RIDE") ;
+	}
+	
+	/* Check if verb is in the object-taking list */
+	for ( i = 0 ; i < n_object_verbs ; i++ )
+		if ( object_verbs[i] == verb )
+			return 1 ;
+	
+	return 0 ;
 }
 
 void low2up (word)
