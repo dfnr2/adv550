@@ -181,6 +181,9 @@ extern int here, there, status, argwd[] ;
 extern int dbunit ;
 extern char clss[] ;
 
+extern int lastlinewd[];
+extern int lastlinlen;
+
 /* Function prototypes */
 extern int error();
 extern void closek();
