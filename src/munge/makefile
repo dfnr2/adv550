@@ -3,7 +3,7 @@
 # 	(c) Ken Wellsch 1985
 #
 CC = /opt/local/bin/gcc
-CFLAGS = -O
+CFLAGS = -O -Wno-deprecated-non-prototype
 KLIB = ../kio/klib.a
 MLIB = mlib.a
 

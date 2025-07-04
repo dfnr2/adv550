@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void executive (a,b)
+void executive (a, b)
   int a, b ;
 {
 	static int saveval ;
@@ -87,7 +87,7 @@ int ssw (a)
 
 #include <time.h>
 
-int svar (a,b)
+int svar (a, b)
   int a, b ;
 {
 	struct tm *tp, *localtime() ;

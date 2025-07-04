@@ -17,7 +17,7 @@
 static struct symstr smem[SMEMSIZ] ;
 static int psmem = SMEMSIZ ;
 
-void define (nam,val)
+void define (nam, val)
   char *nam ;
   int val ;
 {

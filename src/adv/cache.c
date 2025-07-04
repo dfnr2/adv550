@@ -100,7 +100,7 @@ static int ok2sav (key)
 	return (val) ;
 }
 
-static void PutCache (key,size)
+static void PutCache (key, size)
   int key, size ;
 {
 	register int i ;
@@ -175,7 +175,7 @@ void ClrCache ()
 	return ;
 }
 
-void wcopy (a,b,n)
+void wcopy (a, b, n)
   register short int *a, *b ;
   register int n ;
 {

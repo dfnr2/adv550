@@ -2,7 +2,7 @@
 # Makefile for the Adventure interpreter.
 # 	(c) Ken Wellsch 1985
 #
-CFLAGS = -O
+CFLAGS = -O -Wno-deprecated-non-prototype
 KLIB = ../kio/klib.a
 ALIB = alib.a
 

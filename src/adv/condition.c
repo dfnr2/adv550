@@ -12,7 +12,7 @@
 #include "adefs.h"
 #include <stdio.h>
 
-int condition (bp,cbuf,len)
+int condition (bp, cbuf, len)
   int bp, len ;
   short int cbuf[] ;
 {
@@ -150,7 +150,7 @@ int condition (bp,cbuf,len)
 	}
 }
 
-int flushc (bp,cbuf,len)
+int flushc (bp, cbuf, len)
   register int bp ;
   int len ;
   short int cbuf[] ;
