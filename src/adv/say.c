@@ -41,7 +41,7 @@ void say (key)
 	return ;
 }
 
-void sayval (key,val)
+void sayval (key, val)
   int key, val ;
 {
 	register int rec, i, endb ;
@@ -106,7 +106,7 @@ int saykey (key)
 	return (rec) ;
 }
 
-void saynam (key,op)
+void saynam (key, op)
   int key, op ;
 {
 	register int i, j ;
@@ -140,7 +140,7 @@ void saynam (key,op)
 	return ;
 }
 
-int findnam (val,s)
+int findnam (val, s)
   int val ;
   char *s ;
 {

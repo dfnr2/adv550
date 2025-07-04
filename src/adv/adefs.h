@@ -230,6 +230,4 @@ extern int nextrec();
 extern int hash();
 extern void setup();
 extern void opendb();
-extern void movobj();
-extern void setbit();
-extern void setval();
+extern int ssw();

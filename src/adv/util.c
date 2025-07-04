@@ -21,7 +21,7 @@
 		return (clss[key/1000]) ;
 	}
 
-#endif class
+#endif /*class*/
 
 int eval (key)
   int key ;
@@ -81,7 +81,7 @@ int eval (key)
 		return (i) ;
 	}
 
-#endif indx
+#endif /*indx*/
 
 #ifndef logical
 
@@ -93,9 +93,9 @@ int eval (key)
 		return (ltab[instr]) ;
 	}
 
-#endif logical
+#endif /*logical*/
 
-void movobj (key,loc)
+void movobj (key, loc)
   int key, loc ;
 {
 	if ( class(key) != OBJECT )
@@ -129,7 +129,7 @@ int near (key)
 		return (opn[opcode]) ;
 	}
 
-#endif opnum
+#endif /*opnum*/
 
 int ref (key)
   int key ;
@@ -149,4 +149,4 @@ int ref (key)
 		return (objloc[indx(key)]) ;
 	}
 
-#endif where
+#endif /*where*/

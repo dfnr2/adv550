@@ -33,7 +33,7 @@ static char *ops [MAXOPS] =
 
 int CurKey = -1 ;
 
-void showop (active,op,args)
+void showop (active, op, args)
   int active, op ;
   short int args[3] ;
 {

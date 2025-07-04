@@ -65,7 +65,7 @@ int bitval (key)
 	return (val) ;
 }
 
-void setbit (key,bits)
+void setbit (key, bits)
   int key, bits ;
 {
 	register int val ;
@@ -102,7 +102,7 @@ void setbit (key,bits)
 	return ;
 }
 
-void setval (key,val)
+void setval (key, val)
   int key, val ;
 {
 	switch (class(key))
